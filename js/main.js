@@ -7,9 +7,7 @@ function getRandFrom (min, max) {
   }
   return Math.floor(Math.random() * (max - min) + min);
 }
-  
 getRandFrom(2, 4);
-  
 //Возвращение случайного числа с плавающей точкой и выбранным количеством знаков после запятой(для keksobooking'a). Метод .toFixed() подглядел на StackOverflow.
 function getRandFloat (min, max, numberLeft) {
   if (max <= min) {
@@ -17,6 +15,5 @@ function getRandFloat (min, max, numberLeft) {
   }
   return (Math.random() * (max - min) + min).toFixed(numberLeft);
 }
-  
+
 getRandFloat(2, 34, 4);
-  
