@@ -97,5 +97,5 @@ const getOffer = () => {
 };
 
 const getMockAds = () => {
-	return new Array(10).fill('').map(getOffer());
+	return new Array(10).fill('').map(getOffer);
 };
