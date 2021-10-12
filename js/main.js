@@ -1,3 +1,3 @@
-import {getMockAds} from './mock-data';
+import {getMockAds} from './mock-data.js';
 
 getMockAds();
