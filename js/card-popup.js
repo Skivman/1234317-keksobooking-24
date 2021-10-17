@@ -10,10 +10,10 @@ const cardsListFragment = document.createDocumentFragment();
 
 similarOffers.forEach((offer) => {
   const offerElement = cardTemplate.cloneNode(true);
-  offerElement.querySelector('.popup-title').textContent = offer.offer.title;
+  offerElement.querySelector('.popup__title').textContent = offer.offer.title;
   offerElement.querySelector('.popup__text--address').textContent = offer.offer.address;
   offerElement.querySelector('.popup__text--price').textContent = `${offer.offer.price} ₽/ночь`;
-  switch (offer.type.textContent) {
+  switch (offer.offer.type) {
     case 'palace':
       offerElement.querySelector('.popup__type').textContent = 'Дворец';
       break;
@@ -62,7 +62,7 @@ similarOffers.forEach((offer) => {
   offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.offer.checkin}, выезд после ${offer.offer.checkout}.`;
   offerElement.querySelector('.popup__features').textContent = offer.offer.features;
   offerElement.querySelector('.popup__description').textContent = offer.offer.description;
-  offerElement.querySelector('.popup__photos').src = offer.offer.photos;
+  offerElement.querySelector('.popup__photo').src = offer.offer.photos;
   offerElement.querySelector('.popup__avatar').src = offer.author;
   cardsListFragment.appendChild(offerElement);
 });
