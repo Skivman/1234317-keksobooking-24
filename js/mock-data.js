@@ -54,6 +54,6 @@ const getOffer = () => ({
   offer: getNewOffer(),
 });
 
-const getMockAds = () => new Array(10).fill('').map(getOffer);
+const getMockAds = (quantity) => new Array(quantity).fill('').map(getOffer);
 
 export {getMockAds};
