@@ -1,71 +1,39 @@
-import {getMockAds} from './mock-data.js';
-
+import {getCorrectEndings} from './util.js';
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
+const typeTranslation = {
+  'palace': 'Дворец',
+  'flat': 'Квартира',
+  'house': 'Дом',
+  'bungalow': 'Бунгало',
+  'hotel': 'Отель',
+};
 
-const cardsList = document.querySelector('#map-canvas');
-
-const similarOffers = getMockAds();
-
-const cardsListFragment = document.createDocumentFragment();
-
-similarOffers.forEach((offer) => {
+const fillOfferTemplate = function ({author, offer}) {
   const offerElement = cardTemplate.cloneNode(true);
-  offerElement.querySelector('.popup__title').textContent = offer.offer.title;
-  offerElement.querySelector('.popup__text--address').textContent = offer.offer.address;
-  offerElement.querySelector('.popup__text--price').textContent = `${offer.offer.price} ₽/ночь`;
-  switch (offer.offer.type) {
-    case 'palace':
-      offerElement.querySelector('.popup__type').textContent = 'Дворец';
-      break;
-    case 'flat':
-      offerElement.querySelector('.popup__type').textContent = 'Квартира';
-      break;
-    case 'house':
-      offerElement.querySelector('.popup__type').textContent = 'Дом';
-      break;
-    case 'bungalow':
-      offerElement.querySelector('.popup__type').textContent = 'Бунгало';
-      break;
-    case 'hotel':
-      offerElement.querySelector('.popup__type').textContent = 'Отель';
-      break;
-  }
-  const getCorrectEndings = function (guests, rooms) {
-    const guestsLastNumber = guests.toString().slice(-1);
-    const roomsLastNumber = rooms.toString().slice(-1);
-    let roomsString = '';
-    let guestsString = '';
-    switch (Number(roomsLastNumber)) {
-      case 1:
-        roomsString = `${rooms} комната`;
-        break;
-      case 2:
-      case 3:
-      case 4:
-        roomsString = `${rooms} комнаты`;
-        break;
-      default:
-        roomsString = `${rooms} комнат`;
-        break;
-    }
-    switch (Number(guestsLastNumber)) {
-      case 1:
-        guestsString = ` для ${guests} гостя.`;
-        break;
-      default:
-        guestsString = ` для ${guests} гостей.`;
-        break;
-    }
-    return roomsString+guestsString;
-  };
-  offerElement.querySelector('.popup__text--capacity').textContent = getCorrectEndings(offer.offer.guests, offer.offer.rooms);
-  offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.offer.checkin}, выезд после ${offer.offer.checkout}.`;
-  offerElement.querySelector('.popup__features').textContent = offer.offer.features;
-  offerElement.querySelector('.popup__description').textContent = offer.offer.description;
-  offerElement.querySelector('.popup__photo').src = offer.offer.photos;
-  offerElement.querySelector('.popup__avatar').src = offer.author;
-  cardsListFragment.appendChild(offerElement);
-});
+  offerElement.querySelector('.popup__title').textContent = offer.title || 'Нет описания';
+  offerElement.querySelector('.popup__text--address').textContent = offer.address;
+  offerElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
+  offerElement.querySelector('.popup__type').textContent = typeTranslation[offer.type];
+  offerElement.querySelector('.popup__text--capacity').textContent = getCorrectEndings(offer.guests, offer.rooms);
+  offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд после ${offer.checkout}.`;
+  offerElement.querySelector('.popup__features').innerHTML = offer.features.map((feature) => {
+    return `<li class="popup__feature popup__feature--${feature}"></li>`
+  }).join('') || 'Нет удобств';
+  offerElement.querySelector('.popup__description').textContent = offer.description || 'Нет описания';
+  offerElement.querySelector('.popup__photos').innerHTML = offer.photos.map((photoUrl) => {
+    return `<img src='${photoUrl}' class="popup__photo" width="45" height="40" alt="Фотография жилья"></img>`
+  }).join('') || 'Нет фотографий';
+  offerElement.querySelector('.popup__avatar').src = author.avatar;
+  return offerElement;
+};
+//Функция отрисовки DOM-элемента
+export function drawOffers(data) {
+  const cardsList = document.querySelector('#map-canvas');
+  const cardsListFragment = document.createDocumentFragment();
+  data.forEach((offer) => {
+    cardsListFragment.appendChild(fillOfferTemplate(offer));
+    cardsList.appendChild(cardsListFragment);
+  });
+}
 
-cardsList.appendChild(cardsListFragment);
 

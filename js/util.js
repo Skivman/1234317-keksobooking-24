@@ -11,9 +11,39 @@ function getRandomFloatNumber (min, max, numberLeft) {
 }
 
 //Функция случайного индекса из массива
-const getRandomIndex = (arr) => arr[(Math.floor(Math.random() * arr.length))];
+const getRandomIndex = (arr) => arr[(Math.floor(Math.random() * arr.length + 1))];
 
 //Функция для создания массива случайной длины
-const getRandomLengthArray = (arr) => arr.slice(0, Math.floor(Math.random() * arr.length));
+const getRandomLengthArray = (arr) => arr.slice(0, Math.floor(Math.random() * arr.length + 1));
 
-export {getRandomNumber, getRandomFloatNumber, getRandomIndex, getRandomLengthArray};
+//Функция для правильных окончаний в строке описания количества комнат
+const getCorrectEndings = function (guests, rooms) {
+  const guestsLastNumber = guests.toString().slice(-1);
+  const roomsLastNumber = rooms.toString().slice(-1);
+  let roomsString = '';
+  let guestsString = '';
+  switch (Number(roomsLastNumber)) {
+    case 1:
+      roomsString = `${rooms} комната`;
+      break;
+    case 2:
+    case 3:
+    case 4:
+      roomsString = `${rooms} комнаты`;
+      break;
+    default:
+      roomsString = `${rooms} комнат`;
+      break;
+  }
+  switch (Number(guestsLastNumber)) {
+    case 1:
+      guestsString = ` для ${guests} гостя.`;
+      break;
+    default:
+      guestsString = ` для ${guests} гостей.`;
+      break;
+  }
+  return roomsString+guestsString;
+};
+
+export {getRandomNumber, getRandomFloatNumber, getRandomIndex, getRandomLengthArray, getCorrectEndings};

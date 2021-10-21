@@ -1,7 +1,9 @@
-import {getRandomNumber, getRandomFloatNumber, getRandomIndex, getRandomLengthArray} from './util.js';
-
+import {getRandomNumber, getRandomFloatNumber, getRandomIndex, getRandomLengthArray, getCorrectEndings} from'./util.js';
 // Типы сдаваемой жилплощади
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+
+//Карта значений типов жилплощади
+
 
 //Время въезда/выезда
 const CHECK_IN_OUT = ['12:00', '13:00', '14:00'];
