@@ -11,7 +11,7 @@ function getRandomFloatNumber (min, max, numberLeft) {
 }
 
 //Функция случайного индекса из массива
-const getRandomIndex = (arr) => arr[(Math.floor(Math.random() * arr.length + 1))];
+const getRandomIndex = (arr) => arr[(Math.floor(Math.random() * arr.length))];
 
 //Функция для создания массива случайной длины
 const getRandomLengthArray = (arr) => arr.slice(0, Math.floor(Math.random() * arr.length + 1));

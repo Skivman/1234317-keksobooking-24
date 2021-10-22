@@ -17,11 +17,11 @@ const fillOfferTemplate = function ({author, offer}) {
   offerElement.querySelector('.popup__text--capacity').textContent = getCorrectEndings(offer.guests, offer.rooms);
   offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд после ${offer.checkout}.`;
   offerElement.querySelector('.popup__features').innerHTML = offer.features.map((feature) => {
-    return `<li class="popup__feature popup__feature--${feature}"></li>`
+    return `<li class="popup__feature popup__feature--${feature}"></li>`;
   }).join('') || 'Нет удобств';
   offerElement.querySelector('.popup__description').textContent = offer.description || 'Нет описания';
   offerElement.querySelector('.popup__photos').innerHTML = offer.photos.map((photoUrl) => {
-    return `<img src='${photoUrl}' class="popup__photo" width="45" height="40" alt="Фотография жилья"></img>`
+    return `<img src='${photoUrl}' class="popup__photo" width="45" height="40" alt="Фотография жилья"></img>`;
   }).join('') || 'Нет фотографий';
   offerElement.querySelector('.popup__avatar').src = author.avatar;
   return offerElement;
