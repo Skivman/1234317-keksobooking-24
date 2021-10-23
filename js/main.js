@@ -1,3 +1,4 @@
-import {getMockAds} from './mock-data.js';
+import {getMockAds} from'./mock-data.js';
+import {drawOffers} from './card-popup.js';
 
-getMockAds();
+drawOffers(getMockAds(2));

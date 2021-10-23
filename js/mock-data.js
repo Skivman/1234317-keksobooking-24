@@ -1,13 +1,15 @@
-import {getRandomNumber, getRandomFloatNumber, getRandomIndex, getRandomLengthArray} from './util.js';
-
+import {getRandomNumber, getRandomFloatNumber, getRandomIndex, getRandomLengthArray, getCorrectEndings} from'./util.js';
 // Типы сдаваемой жилплощади
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+
+//Карта значений типов жилплощади
+
 
 //Время въезда/выезда
 const CHECK_IN_OUT = ['12:00', '13:00', '14:00'];
 
 //Удобства
-const FEATURES = ['wi-fi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
 //Фото
 const PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
@@ -23,7 +25,7 @@ const getNewUser = () => {
   const number = getRandomNumber(1, 10);
   const avatarNumber = number < 10 ? `0${number}` : number;
   return {
-    avatar: `/img/avatars/user${avatarNumber}.png`,
+    avatar: `img/avatars/user${avatarNumber}.png`,
   };
 };
 
@@ -54,6 +56,6 @@ const getOffer = () => ({
   offer: getNewOffer(),
 });
 
-const getMockAds = () => new Array(10).fill('').map(getOffer);
+const getMockAds = (quantity) => new Array(quantity).fill('').map(getOffer);
 
 export {getMockAds};
