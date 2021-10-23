@@ -25,7 +25,7 @@ const getNewUser = () => {
   const number = getRandomNumber(1, 10);
   const avatarNumber = number < 10 ? `0${number}` : number;
   return {
-    avatar: `/img/avatars/user${avatarNumber}.png`,
+    avatar: `img/avatars/user${avatarNumber}.png`,
   };
 };
 
