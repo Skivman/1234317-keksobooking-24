@@ -9,6 +9,8 @@ const typeMap = {
   'house': 5000,
   'palace': 10000,
 };
+const roomQuantity = document.querySelector('#room_number');
+const guestQuantity = document.querySelector('#capacity');
 
 typeSelector.addEventListener('change', () => {
   priceInput.setAttribute('placeholder', typeMap[typeSelector.value]);
@@ -30,13 +32,6 @@ formTitle.addEventListener('input', () => {
   }
   formTitle.reportValidity();
 });
-
-// 1 комната — «для 1 гостя»;
-// 2 комнаты — «для 2 гостей» или «для 1 гостя»;
-// 3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;
-// 100 комнат — «не для гостей».
-const roomQuantity = document.querySelector('#room_number');
-const guestQuantity = document.querySelector('#capacity');
 
 roomQuantity.addEventListener('change', () => {
   switch (roomQuantity.value) {
