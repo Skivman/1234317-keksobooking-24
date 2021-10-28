@@ -1,4 +1,4 @@
-import {getRandomNumber, getRandomFloatNumber, getRandomIndex, getRandomLengthArray, getCorrectEndings} from'./util.js';
+import {getRandomNumber, getRandomFloatNumber, getRandomIndex, getRandomLengthArray} from'./util.js';
 // Типы сдаваемой жилплощади
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 
