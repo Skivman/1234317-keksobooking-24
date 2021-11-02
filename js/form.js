@@ -64,6 +64,7 @@ formTitle.addEventListener('input', () => {
 guestField.setAttribute('disabled', 'disabled');
 roomQuantity.addEventListener('change', () => {
   guestField.removeAttribute('disabled');
+	roomQuantity.value === '100' ? guestField.value = '0' : guestField.value = roomQuantity.value;
   if (roomQuantity.value === '100') {
     for (let i = 0; i <= guestQuantity.length - 1; i++) {
       guestQuantity[i].setAttribute('disabled', 'disabled');
