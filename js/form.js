@@ -38,7 +38,7 @@ const disableForm = function (map, form)  {
     element.setAttribute('disabled', 'disabled');
   });
 };
-disableForm(mapForm, userForm);
+// disableForm(mapForm, userForm);
 
 //Обработчик полей "тип/цена"
 typeSelector.addEventListener('change', () => {
