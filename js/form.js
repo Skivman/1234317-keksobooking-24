@@ -1,3 +1,4 @@
+//Переменные для полей тип жилья/цена
 const MIN_TITLE_LENGHT = 30;
 const MAX_TITLE_LENGTH = 100;
 const typeSelector = document.querySelector('#type');
@@ -9,18 +10,44 @@ const typeMap = {
   'house': 5000,
   'palace': 10000,
 };
+//Переменная для поля заголовка
+const formTitle = document.querySelector('#title');
+//Переменные для полей количества комнат/гостей
 const roomQuantity = document.querySelector('#room_number');
-const guestQuantity = document.querySelector('#capacity');
+const guestField = document.querySelector('#capacity');
+const guestQuantity = document.querySelector('#capacity').children;
+//Переменные для секции карты
+const userForm = document.querySelector('.ad-form');
+const mapForm = document.querySelector('.map__filters');
+//Переменные для полей "время заезда и выезда"
+const arrivalField = document.querySelector('#timein');
+const departureField = document.querySelector('#timeout');
 
+//Функция, делающая страницу неактивной (вместе с картой)
+const disableForm = function (map, form)  {
+  const arrayToDisable = [map, form];
+  arrayToDisable.forEach((container) => {
+    container.classList.add(`${container.className}--disabled`);
+  });
+  const mapElements = Array.from(map.children);
+  mapElements.forEach((element) => {
+    element.setAttribute('disabled', 'disabled');
+  });
+  const formElements = Array.from(form.children);
+  formElements.forEach((element) => {
+    element.setAttribute('disabled', 'disabled');
+  });
+};
+disableForm(mapForm, userForm);
+
+//Обработчик полей "тип/цена"
 typeSelector.addEventListener('change', () => {
   priceInput.setAttribute('placeholder', typeMap[typeSelector.value]);
   priceInput.setAttribute('min', typeMap[typeSelector.value]);
-  priceInput.setCustomValidity(`Минимальное значение - ${typeMap[typeSelector.value]} руб.`);
   priceInput.value = '';
-  priceInput.reportValidity();
 });
 
-const formTitle = document.querySelector('#title');
+//Обработчик заголовка
 formTitle.addEventListener('input', () => {
   const titleLength = formTitle.value.length;
   if (titleLength < MIN_TITLE_LENGHT) {
@@ -33,15 +60,35 @@ formTitle.addEventListener('input', () => {
   formTitle.reportValidity();
 });
 
+//Валидация полей "кол-во комнат/гостей"
+guestField.setAttribute('disabled', 'disabled');
 roomQuantity.addEventListener('change', () => {
-  switch (roomQuantity.value) {
-    case '1':
-      return guestQuantity.setCustomValidity('Не более 1 гостя');
-    case '2':
-      return guestQuantity.setCustomValidity('Не более 2 гостей');
-    case '3':
-      return guestQuantity.setCustomValidity('Не более 3 гостей');
-    default:
-      return guestQuantity.setCustomValidity('Не для гостей');
+  guestField.removeAttribute('disabled');
+  if (roomQuantity.value === '100') {
+    for (let i = 0; i <= guestQuantity.length - 1; i++) {
+      guestQuantity[i].setAttribute('disabled', 'disabled');
+      if (Number(guestQuantity[i].value) === 0) {
+        guestQuantity[i].removeAttribute('disabled');
+      }
+    }
+  } else {
+    for (let i = 0; i <= guestQuantity.length - 1; i++) {
+      if (Number(guestQuantity[i].value) > Number(roomQuantity.value)) {
+        guestQuantity[i].setAttribute('disabled', 'disabled');
+      } else if (Number(guestQuantity[i].value) === 0) {
+        guestQuantity[i].setAttribute('disabled', 'disabled');
+      } else {
+        guestQuantity[i].removeAttribute('disabled');
+      }
+    }
   }
 });
+
+//Синхронизация полей "время заезда/выезда"
+const switchArrivalDeparture = function (arrival, departure) {
+  arrival.addEventListener('change', () => departure.value = arrival.value);
+  departure.addEventListener('change', () => arrival.value = departure.value);
+};
+
+switchArrivalDeparture(arrivalField, departureField);
+
