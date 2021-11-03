@@ -16,29 +16,21 @@ const formTitle = document.querySelector('#title');
 const roomQuantity = document.querySelector('#room_number');
 const guestField = document.querySelector('#capacity');
 const guestQuantity = document.querySelector('#capacity').children;
-//Переменные для секции карты
-const userForm = document.querySelector('.ad-form');
-const mapForm = document.querySelector('.map__filters');
+const guestQuantityElements = Array.from(guestQuantity);
+
 //Переменные для полей "время заезда и выезда"
 const arrivalField = document.querySelector('#timein');
 const departureField = document.querySelector('#timeout');
 
-//Функция, делающая страницу неактивной (вместе с картой)
-const disableForm = function (map, form)  {
-  const arrayToDisable = [map, form];
-  arrayToDisable.forEach((container) => {
-    container.classList.add(`${container.className}--disabled`);
-  });
-  const mapElements = Array.from(map.children);
-  mapElements.forEach((element) => {
-    element.setAttribute('disabled', 'disabled');
-  });
-  const formElements = Array.from(form.children);
-  formElements.forEach((element) => {
-    element.setAttribute('disabled', 'disabled');
-  });
+//Константы для полей "Количество гостей/комнат"
+const HUNDRED_ROOMS_VALUE = '100';
+const NOT_FOR_GUESTS_VALUE = '0';
+
+//Синхронизация полей "время заезда/выезда"
+const switchArrivalDeparture = function (arrival, departure) {
+  arrival.addEventListener('change', () => departure.value = arrival.value);
+  departure.addEventListener('change', () => arrival.value = departure.value);
 };
-// disableForm(mapForm, userForm);
 
 //Обработчик полей "тип/цена"
 typeSelector.addEventListener('change', () => {
@@ -61,35 +53,30 @@ formTitle.addEventListener('input', () => {
 });
 
 //Валидация полей "кол-во комнат/гостей"
-guestField.setAttribute('disabled', 'disabled');
+
+guestField.disabled = true;
 roomQuantity.addEventListener('change', () => {
-  guestField.removeAttribute('disabled');
-	roomQuantity.value === '100' ? guestField.value = '0' : guestField.value = roomQuantity.value;
-  if (roomQuantity.value === '100') {
-    for (let i = 0; i <= guestQuantity.length - 1; i++) {
-      guestQuantity[i].setAttribute('disabled', 'disabled');
-      if (Number(guestQuantity[i].value) === 0) {
-        guestQuantity[i].removeAttribute('disabled');
+  guestField.disabled = false;
+  roomQuantity.value === HUNDRED_ROOMS_VALUE ? guestField.value = NOT_FOR_GUESTS_VALUE : guestField.value = roomQuantity.value;
+  if (roomQuantity.value === HUNDRED_ROOMS_VALUE) {
+    guestQuantityElements.forEach((element) => {
+      element.disabled = true;
+      if (element.value === NOT_FOR_GUESTS_VALUE) {
+        element.disabled = false;
       }
-    }
+    });
   } else {
-    for (let i = 0; i <= guestQuantity.length - 1; i++) {
-      if (Number(guestQuantity[i].value) > Number(roomQuantity.value)) {
-        guestQuantity[i].setAttribute('disabled', 'disabled');
-      } else if (Number(guestQuantity[i].value) === 0) {
-        guestQuantity[i].setAttribute('disabled', 'disabled');
+    guestQuantityElements.forEach((element) => {
+      if (Number(element.value) > Number(roomQuantity.value)) {
+        element.disabled = true;
+      } else if (element.value === NOT_FOR_GUESTS_VALUE) {
+        element.disabled = true;
       } else {
-        guestQuantity[i].removeAttribute('disabled');
+        element.disabled = false;
       }
-    }
+    });
   }
 });
-
-//Синхронизация полей "время заезда/выезда"
-const switchArrivalDeparture = function (arrival, departure) {
-  arrival.addEventListener('change', () => departure.value = arrival.value);
-  departure.addEventListener('change', () => arrival.value = departure.value);
-};
 
 switchArrivalDeparture(arrivalField, departureField);
 
