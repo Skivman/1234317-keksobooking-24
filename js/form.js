@@ -54,9 +54,8 @@ formTitle.addEventListener('input', () => {
 
 //Валидация полей "кол-во комнат/гостей"
 
-guestField.disabled = true;
+
 roomQuantity.addEventListener('change', () => {
-  guestField.disabled = false;
   roomQuantity.value === HUNDRED_ROOMS_VALUE ? guestField.value = NOT_FOR_GUESTS_VALUE : guestField.value = roomQuantity.value;
   if (roomQuantity.value === HUNDRED_ROOMS_VALUE) {
     guestQuantityElements.forEach((element) => {
@@ -76,6 +75,15 @@ roomQuantity.addEventListener('change', () => {
       }
     });
   }
+});
+
+guestField.addEventListener('input', () => {
+  if (Number(guestField.value) > Number(roomQuantity.value)) {
+    guestField.setCustomValidity(`Количество гостей не должно превышать количества комнат`);
+  } else {
+    guestField.setCustomValidity('');
+  }
+  guestField.reportValidity();
 });
 
 switchArrivalDeparture(arrivalField, departureField);
