@@ -15,8 +15,7 @@ const formTitle = document.querySelector('#title');
 //Переменные для полей количества комнат/гостей
 const roomQuantity = document.querySelector('#room_number');
 const guestField = document.querySelector('#capacity');
-const guestQuantity = document.querySelector('#capacity').children;
-const guestQuantityElements = Array.from(guestQuantity);
+
 
 //Переменные для полей "время заезда и выезда"
 const arrivalField = document.querySelector('#timein');
@@ -25,6 +24,7 @@ const departureField = document.querySelector('#timeout');
 //Константы для полей "Количество гостей/комнат"
 const HUNDRED_ROOMS_VALUE = '100';
 const NOT_FOR_GUESTS_VALUE = '0';
+
 
 //Синхронизация полей "время заезда/выезда"
 const switchArrivalDeparture = function (arrival, departure) {
@@ -54,37 +54,44 @@ formTitle.addEventListener('input', () => {
 
 //Валидация полей "кол-во комнат/гостей"
 
-
-roomQuantity.addEventListener('change', () => {
-  roomQuantity.value === HUNDRED_ROOMS_VALUE ? guestField.value = NOT_FOR_GUESTS_VALUE : guestField.value = roomQuantity.value;
-  if (roomQuantity.value === HUNDRED_ROOMS_VALUE) {
-    guestQuantityElements.forEach((element) => {
-      element.disabled = true;
-      if (element.value === NOT_FOR_GUESTS_VALUE) {
-        element.disabled = false;
-      }
-    });
-  } else {
-    guestQuantityElements.forEach((element) => {
-      if (Number(element.value) > Number(roomQuantity.value)) {
+function changeCapacity (idOne, idTwo) {
+  idOne.addEventListener('click', () => {
+    const idOneElements = idOne.children;
+    const idOneElementsArray = Array.from(idOneElements);
+    const idTwoElements = idTwo.children;
+    const idTwoElementsArray = Array.from(idTwoElements);
+    idTwo.selectedIndex = -1;
+    if (idOne.selectedIndex === idOneElementsArray.length - 1) {
+      idTwoElementsArray.forEach((element) => {
         element.disabled = true;
-      } else if (element.value === NOT_FOR_GUESTS_VALUE) {
-        element.disabled = true;
-      } else {
-        element.disabled = false;
-      }
-    });
-  }
-});
+        if (element.value === idTwoElementsArray[idTwoElementsArray.length - 1].value) {
+          element.disabled = false;
+        }
+      });
+    } else {
+      idTwoElementsArray.forEach((element) => {
+        if (Number(element.value) > Number(idOne.value)) {
+          element.disabled = true;
+        } else if (element.value === idTwoElementsArray[idTwoElementsArray.length - 1].value) {
+          element.disabled = true;
+        } else {
+          element.disabled = false;
+        }
+      });
+    }
+  });
+  idTwo.addEventListener('click', () => {
+    if (Number(idTwo.value) > Number(idOne.value)) {
+      idTwo.setCustomValidity('Количество гостей не может превышать количества комнат');
+    } else {
+      idTwo.setCustomValidity('');
+    }
+    idTwo.reportValidity();
+  });
+}
 
-guestField.addEventListener('input', () => {
-  if (Number(guestField.value) > Number(roomQuantity.value)) {
-    guestField.setCustomValidity(`Количество гостей не должно превышать количества комнат`);
-  } else {
-    guestField.setCustomValidity('');
-  }
-  guestField.reportValidity();
-});
+
+changeCapacity(roomQuantity, guestField);
 
 switchArrivalDeparture(arrivalField, departureField);
 
