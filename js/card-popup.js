@@ -33,3 +33,5 @@ export function drawOffers(data) {
 }
 
 
+export {fillOfferTemplate};
+
