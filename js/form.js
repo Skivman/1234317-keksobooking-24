@@ -21,11 +21,6 @@ const guestField = document.querySelector('#capacity');
 const arrivalField = document.querySelector('#timein');
 const departureField = document.querySelector('#timeout');
 
-//Константы для полей "Количество гостей/комнат"
-const HUNDRED_ROOMS_VALUE = '100';
-const NOT_FOR_GUESTS_VALUE = '0';
-
-
 //Синхронизация полей "время заезда/выезда"
 const switchArrivalDeparture = function (arrival, departure) {
   arrival.addEventListener('change', () => departure.value = arrival.value);
