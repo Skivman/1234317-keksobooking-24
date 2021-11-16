@@ -1,5 +1,5 @@
 import {fillOfferTemplate} from './card-popup.js';
-import {getMockAds} from './mock-data.js';
+
 
 //Переменные для секции карты
 const userForm = document.querySelector('.ad-form');
@@ -84,15 +84,15 @@ const secondaryMarkerIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-const getSecondaryMarkers = (quantity) => {
-  getMockAds(quantity).forEach((element) => {
+
+const getSecondaryMarkers = (data) => {
+  data.forEach((element) => {
     const offerInPopup = fillOfferTemplate(element);
     const marker = L.marker({
       lat: element.location.lat,
       lng: element.location.lng,
     },
     {
-      draggable: true,
       icon: secondaryMarkerIcon,
     });
     marker.addTo(mapView)
@@ -100,4 +100,5 @@ const getSecondaryMarkers = (quantity) => {
   });
 };
 
-getSecondaryMarkers(7);
+export {getSecondaryMarkers, mapView, mainMarker};
+
