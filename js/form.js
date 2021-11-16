@@ -49,7 +49,7 @@ formTitle.addEventListener('input', () => {
 
 //Валидация полей "кол-во комнат/гостей"
 
-function changeCapacity (idOne, idTwo) {
+const changeCapacity = function (idOne, idTwo) {
   idOne.addEventListener('click', () => {
     const idOneElements = idOne.children;
     const idOneElementsArray = Array.from(idOneElements);
@@ -83,7 +83,7 @@ function changeCapacity (idOne, idTwo) {
     }
     idTwo.reportValidity();
   });
-}
+};
 
 
 changeCapacity(roomQuantity, guestField);
