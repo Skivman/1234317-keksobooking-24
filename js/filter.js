@@ -1,4 +1,4 @@
-import { getSecondaryMarkers, layerGroup } from './map.js';
+import { renderSecondaryMarkers, layerGroup } from './map.js';
 import {debounce} from './utils/debounce.js'
 
 const mapFilters = document.querySelector('.map__filters');
@@ -69,11 +69,11 @@ function getFiltersData(announcements) {
 
 const getFiltered = (incoming) => {
     const clonedOffers = incoming.slice()
-    getSecondaryMarkers(clonedOffers.slice(0, MAX_OFFERS_PER_TIME))
-    mapFilters.addEventListener('change', () => {
+    renderSecondaryMarkers(clonedOffers.slice(0, MAX_OFFERS_PER_TIME))
+    mapFilters.addEventListener('change', debounce(() => {
         layerGroup.clearLayers();
-        getSecondaryMarkers(getFiltersData(clonedOffers).slice(0, MAX_OFFERS_PER_TIME))
-    });
+        renderSecondaryMarkers(getFiltersData(clonedOffers).slice(0, MAX_OFFERS_PER_TIME))
+    }), DEBOUNCE_TIME);
 };
 
 
