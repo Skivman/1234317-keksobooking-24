@@ -84,6 +84,7 @@ const secondaryMarkerIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
+const layerGroup = L.layerGroup().addTo(mapView);
 
 const getSecondaryMarkers = (data) => {
   data.forEach((element) => {
@@ -95,10 +96,10 @@ const getSecondaryMarkers = (data) => {
     {
       icon: secondaryMarkerIcon,
     });
-    marker.addTo(mapView)
+    marker.addTo(layerGroup)
       .bindPopup(offerInPopup);
   });
 };
 
-export {getSecondaryMarkers, mapView, mainMarker};
+export {getSecondaryMarkers, mapView, mainMarker, layerGroup};
 
