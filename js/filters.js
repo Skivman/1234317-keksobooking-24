@@ -1,14 +1,20 @@
-import { renderSecondaryMarkers, layerGroup } from './map.js';
-import {debounce} from './utils/debounce.js';
+import { getSecondaryMarkers } from './map.js';
 
-const mapFilters = document.querySelector('.map__filters');
-const housingType = mapFilters.querySelector('#housing-type');
-const housingPrice = mapFilters.querySelector('#housing-price');
-const housingRooms = mapFilters.querySelector('#housing-rooms');
-const housingGuests = mapFilters.querySelector('#housing-guests');
-const housingFeatures = [...mapFilters.querySelectorAll('[type="checkbox"]')];
-const MAX_OFFERS_PER_TIME = 10;
-const DEBOUNCE_TIME = 5000;
+
+const filtersForm = document.querySelector('.map__filters');
+const housingType = filtersForm.querySelector('#housing-type');
+const housingPrice = filtersForm.querySelector('#housing-price');
+const housingRooms = filtersForm.querySelector('#housing-rooms');
+const housingGuests = filtersForm.querySelector('#housing-guests');
+const housingFeatures = [...filtersForm.querySelectorAll('[type="checkbox"]')];
+const filtersFormElements = [...filtersForm.children];
+const Default = {
+  OFFER_TYPE: housingType.value,
+  OFFER_PRICE: housingPrice.value,
+  OFFER_ROOMS: housingRooms.value,
+  OFFER_GUESTS: housingGuests.value,
+  OFFER_FEATURES: housingFeatures.value,
+}
 const HOUSING_TYPE_VALUES = {
   'any': (value) => value,
   'bungalow': (value) => value === 'bungalow',
@@ -65,13 +71,39 @@ function getFiltersData(announcements) {
       filterByFeatures(announcement));
 }
 
-const getFiltered = (incoming) => {
-  const clonedOffers = incoming.slice()
-  renderSecondaryMarkers(clonedOffers.slice(0, MAX_OFFERS_PER_TIME))
-  mapFilters.addEventListener('change', debounce(() => {
-    layerGroup.clearLayers();
-    renderSecondaryMarkers(getFiltersData(clonedOffers).slice(0, MAX_OFFERS_PER_TIME))
-  }), DEBOUNCE_TIME);
+const changeFilter = (data) => {
+  filtersFormElements.forEach((element) => {
+    element.addEventListener('input', () => {
+      console.log(getFiltersData(data));
+    });
+  });
 };
 
-export {getFiltered};
+const getOfferPriority = (offer) => {
+  let priority = 0;
+  if (offer.type === housingType || Default.OFFER_TYPE) {
+    priority += 5;
+  }
+  if (offer.price === housingPrice || Default.OFFER_PRICE) {
+    priority += 4;
+  }
+  if (offer.rooms === housingRooms || Default.OFFER_ROOMS) {
+    priority += 3;
+  }
+  if (offer.guests === housingGuests || Default.OFFER_GUESTS) {
+    priority += 2;
+  }
+  if (offer.features === housingFeatures || Default.OFFER_FEATURES) {
+    priority += 1;
+  }
+  return priority;
+};
+
+const compareOffers = (offerA, offerB) => {
+  const priorityA = getOfferPriority(offerA);
+  const priorityB = getOfferPriority(offerB);
+
+  return priorityB - priorityA;
+};
+
+export {getFiltersData, changeFilter, compareOffers, filtersForm};

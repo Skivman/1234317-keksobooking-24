@@ -42,7 +42,7 @@ const fillOfferTemplate = function ({author, offer}) {
   }
   return offerElement;
 };
-  
+
 //Функция отрисовки DOM-элемента
 export function drawOffers(data) {
   const cardsList = document.querySelector('#map-canvas');
