@@ -66,11 +66,11 @@ function getFiltersData(announcements) {
 }
 
 const getFiltered = (incoming) => {
-  const clonedOffers = incoming.slice()
-  renderSecondaryMarkers(clonedOffers.slice(0, MAX_OFFERS_PER_TIME))
+  const clonedOffers = incoming.slice();
+  renderSecondaryMarkers(clonedOffers.slice(0, MAX_OFFERS_PER_TIME));
   mapFilters.addEventListener('change', debounce(() => {
     layerGroup.clearLayers();
-    renderSecondaryMarkers(getFiltersData(clonedOffers).slice(0, MAX_OFFERS_PER_TIME))
+    renderSecondaryMarkers(getFiltersData(clonedOffers).slice(0, MAX_OFFERS_PER_TIME));
   }), DEBOUNCE_TIME);
 };
 
