@@ -1,4 +1,4 @@
-import {setFormSubmit, onReset} from './fetch-utils.js';
+import {setFormSubmit, resetForm} from './fetch-utils.js';
 import {getFiltered} from './filter.js';
 
 fetch('https://24.javascript.pages.academy/keksobooking/data')
@@ -11,4 +11,4 @@ fetch('https://24.javascript.pages.academy/keksobooking/data')
   });
 
 setFormSubmit();
-onReset();
+resetForm();

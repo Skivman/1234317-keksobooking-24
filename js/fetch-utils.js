@@ -31,7 +31,7 @@ const clearForm = () => {
 };
 
 //Обработчик добавления сообщения об успешной отправке и его снятия по клику или клавишей Esc
-const onSuccess = () =>{
+const getSuccessMessage = () =>{
   const successTemplate = document.querySelector('#success').content.querySelector('.success');
   const successMessage = successTemplate.cloneNode(true);
   document.body.append(successMessage);
@@ -47,7 +47,7 @@ const onSuccess = () =>{
   });
 };
 //Вывод сообщения об ошибке отправки
-const onError = () => {
+const getErrorMessage = () => {
   const failTemplate = document.querySelector('#error').content.querySelector('.error');
   const failMessage = failTemplate.cloneNode(true);
   document.body.append(failMessage);
@@ -62,7 +62,7 @@ const onError = () => {
 };
 
 //Обработчик кнопки "сбросить"
-const onReset = () => {
+const resetForm = () => {
   resetButton.addEventListener('click', () => {
     clearForm();
   });
@@ -80,15 +80,15 @@ const setFormSubmit = () => {
       })
       .then((response) => {
         if (response.ok) {
-          onSuccess();
+          getSuccessMessage();
         } else {
-          onError();
+          getErrorMessage();
         }
       })
       .catch(() => {
-        onError();
+        getErrorMessage();
       });
   });
 };
 
-export {setFormSubmit, onReset};
+export {setFormSubmit, resetForm};
