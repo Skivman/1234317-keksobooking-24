@@ -1,5 +1,16 @@
 import {fillOfferTemplate} from './card-popup.js';
 
+//Координаты Токио
+const TOKIO = {
+  lat: 35.65283,
+  lng: 139.83947,
+};
+
+//Константа для ограничителя координат
+const COORDINATES_LIMIT = 5;
+
+//Константа начального масштаба карты
+const START_SCALE = 10;
 
 //Переменные для секции карты
 const userForm = document.querySelector('.ad-form');
@@ -9,8 +20,8 @@ const mainMapAddress = document.querySelector('#address');
 
 //Функция, делающая страницу неактивной (вместе с картой)
 const disableForm = () =>  {
-  const arrayToDisable = [mapForm, userForm];
-  arrayToDisable.forEach((container) => {
+  const formsToDisable = [mapForm, userForm];
+  formsToDisable.forEach((container) => {
     container.classList.add(`${container.className}--disabled`);
   });
   const mapElements = Array.from(mapForm.children);
@@ -44,11 +55,12 @@ const enableForm = () => {
 const mapView = L.map('map-canvas')
   .on('load', () => {
     enableForm();
+    mainMapAddress.value = `${TOKIO.lat}, ${TOKIO.lng}`;
   })
   .setView({
-    lat: 35.6892,
-    lng: 139.692,
-  }, 10);
+    lat: TOKIO.lat,
+    lng: TOKIO.lng,
+  }, START_SCALE);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -64,8 +76,8 @@ const mainMarkerIcon = L.icon({
 });
 
 const mainMarker = L.marker({
-  lat: 35.6892,
-  lng: 139.692,
+  lat: TOKIO.lat,
+  lng: TOKIO.lng,
 },
 {
   draggable: true,
@@ -75,7 +87,7 @@ mainMarker.addTo(mapView);
 
 mainMarker.on('moveend', (evt) => {
   const currentCoordinates = evt.target.getLatLng();
-  mainMapAddress.value = currentCoordinates;
+  mainMapAddress.value = `${currentCoordinates.lat.toFixed(COORDINATES_LIMIT)}, ${currentCoordinates.lng.toFixed(COORDINATES_LIMIT)}`;
 });
 
 const secondaryMarkerIcon = L.icon({
@@ -101,5 +113,5 @@ const renderSecondaryMarkers = (data) => {
   });
 };
 
-export {renderSecondaryMarkers, mapView, mainMarker, layerGroup};
+export {renderSecondaryMarkers, mapView, mainMarker, layerGroup, TOKIO, START_SCALE};
 

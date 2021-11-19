@@ -16,13 +16,16 @@ const formTitle = document.querySelector('#title');
 const roomQuantity = document.querySelector('#room_number');
 const guestField = document.querySelector('#capacity');
 
+//Константа для очистки поля "Количество гостей"
+const EMPTY_FIELD = -1;
+
 
 //Переменные для полей "время заезда и выезда"
 const arrivalField = document.querySelector('#timein');
 const departureField = document.querySelector('#timeout');
 
 //Синхронизация полей "время заезда/выезда"
-const switchArrivalDeparture = function (arrival, departure) {
+const switchArrivalDeparture = (arrival, departure) => {
   arrival.addEventListener('change', () => departure.value = arrival.value);
   departure.addEventListener('change', () => arrival.value = departure.value);
 };
@@ -49,13 +52,13 @@ formTitle.addEventListener('input', () => {
 
 //Валидация полей "кол-во комнат/гостей"
 
-const changeCapacity = function (idOne, idTwo) {
+const changeCapacity = (idOne, idTwo) => {
   idOne.addEventListener('click', () => {
     const idOneElements = idOne.children;
     const idOneElementsArray = Array.from(idOneElements);
     const idTwoElements = idTwo.children;
     const idTwoElementsArray = Array.from(idTwoElements);
-    idTwo.selectedIndex = -1;
+    idTwo.selectedIndex = EMPTY_FIELD;
     if (idOne.selectedIndex === idOneElementsArray.length - 1) {
       idTwoElementsArray.forEach((element) => {
         element.disabled = true;

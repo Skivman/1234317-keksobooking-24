@@ -8,7 +8,7 @@ const housingRooms = mapFilters.querySelector('#housing-rooms');
 const housingGuests = mapFilters.querySelector('#housing-guests');
 const housingFeatures = [...mapFilters.querySelectorAll('[type="checkbox"]')];
 const MAX_OFFERS_PER_TIME = 10;
-const DEBOUNCE_TIME = 5000;
+const DEBOUNCE_TIME = 500;
 const HOUSING_TYPE_VALUES = {
   'any': (value) => value,
   'bungalow': (value) => value === 'bungalow',
@@ -57,13 +57,11 @@ const filterByFeatures = (sortItem) => {
   return selectedFeatures.every((feature) => features && features.includes(feature.value));
 };
 
-function getFiltersData(announcements) {
-  return announcements.filter((announcement) => filterByHousingType(announcement) &&
+const getFiltersData = (announcements) => announcements.filter((announcement) => filterByHousingType(announcement) &&
       filterByPrice(announcement) &&
       filterByRooms(announcement) &&
       filterByGuests(announcement) &&
       filterByFeatures(announcement));
-}
 
 const getFiltered = (incoming) => {
   const clonedOffers = incoming.slice();

@@ -1,17 +1,19 @@
-import {mapView, mainMarker} from './map.js';
+import {mapView, mainMarker, TOKIO, START_SCALE} from './map.js';
 
 const adForm = document.querySelector('.ad-form');
 const features = Array.from(adForm.querySelector('.features').children);
 const resetButton = document.querySelector('.ad-form__reset');
+const ROOMS_DEFAULT = '1';
+const TIME_DEFAULT = '12:00';
 
 //Функция очистки формы
 const clearForm = () => {
   adForm.querySelector('#title').value = '';
   adForm.querySelector('#price').value = '';
-  adForm.querySelector('#room_number').value = '1';
-  adForm.querySelector('#capacity').value = '1';
-  adForm.querySelector('#timein').value = '12:00';
-  adForm.querySelector('#timeout').value = '12:00';
+  adForm.querySelector('#room_number').value = ROOMS_DEFAULT;
+  adForm.querySelector('#capacity').value = ROOMS_DEFAULT;
+  adForm.querySelector('#timein').value = TIME_DEFAULT;
+  adForm.querySelector('#timeout').value = TIME_DEFAULT;
   features.forEach((element) => {
     if (element.checked) {
       element.checked = false;
@@ -19,13 +21,13 @@ const clearForm = () => {
   });
   mapView.closePopup();
   mainMarker.setLatLng({
-    lat: 35.6892,
-    lng: 139.692,
+    lat: TOKIO.lat,
+    lng: TOKIO.lng,
   });
   mapView.setView({
-    lat: 35.6892,
-    lng: 139.692,
-  }, 10);
+    lat: TOKIO.lat,
+    lng: TOKIO.lng,
+  }, START_SCALE);
 };
 
 //Обработчик добавления сообщения об успешной отправке и его снятия по клику или клавишей Esc

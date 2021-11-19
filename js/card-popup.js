@@ -8,7 +8,7 @@ const typeTranslation = {
   'hotel': 'Отель',
 };
 //Заполнение шаблона
-const fillOfferTemplate = function ({author, offer}) {
+const fillOfferTemplate =  ({author, offer}) => {
   const offerElement = cardTemplate.cloneNode(true);
   if (offer.title) {
     offerElement.querySelector('.popup__title').textContent = offer.title || 'Нет описания';
@@ -29,13 +29,30 @@ const fillOfferTemplate = function ({author, offer}) {
     offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд после ${offer.checkout}.`;
   }
   if (offer.features) {
-    offerElement.querySelector('.popup__features').innerHTML = offer.features.map((feature) => `<li class="popup__feature popup__feature--${feature}"></li>`).join('') || 'Нет удобств';
+    const popupFeatures = offerElement.querySelector('.popup__features');
+    const featuresListItemsArray = Array.from(popupFeatures.children);
+    featuresListItemsArray.forEach((item) => {
+      const isNecessary = offer.features.some((feature) => item.classList.contains(`popup__feature--${feature}`),
+      );
+      if (!isNecessary) {
+        item.remove();
+      }
+    });
   }
   if (offer.description) {
     offerElement.querySelector('.popup__description').textContent = offer.description || 'Нет описания';
   }
   if (offer.photos) {
-    offerElement.querySelector('.popup__photos').innerHTML = offer.photos.map((photoUrl) => `<img src='${photoUrl}' class="popup__photo" width="45" height="40" alt="Фотография жилья"></img>`).join('') || 'Нет фотографий';
+    const popupPhotos = offerElement.querySelector('.popup__photos');
+    offer.photos.forEach((photo) => {
+      const newPhotoItem = document.createElement('img');
+      newPhotoItem.src = `${photo}`;
+      newPhotoItem.classList.add('popup__photo');
+      newPhotoItem.width = '45';
+      newPhotoItem.height = '40';
+      newPhotoItem.alt = 'Фотография жилья';
+      popupPhotos.appendChild(newPhotoItem);
+    });
   }
   if (author.avatar) {
     offerElement.querySelector('.popup__avatar').src = author.avatar;
@@ -43,15 +60,6 @@ const fillOfferTemplate = function ({author, offer}) {
   return offerElement;
 };
 
-//Функция отрисовки DOM-элемента
-export function drawOffers(data) {
-  const cardsList = document.querySelector('#map-canvas');
-  const cardsListFragment = document.createDocumentFragment();
-  data.forEach((offer) => {
-    cardsListFragment.appendChild(fillOfferTemplate(offer));
-    cardsList.appendChild(cardsListFragment);
-  });
-}
 
 export {fillOfferTemplate};
 
